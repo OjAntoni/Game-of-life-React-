@@ -4,7 +4,7 @@ import Cell from "../classes/Cell";
 import MenuButton from "./MenuButton";
 
 function App() {
-    const [board, setBoard] = useState(getWhiteBoard());
+    const [board, setBoard] = useState(() => getWhiteBoard());
     const [isPainting, setIsPainting] = useState(false);
     const [isUpdating, setIsUpdating] = useState(true);
 
