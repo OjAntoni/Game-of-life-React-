@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import '../style/App.css';
 import Cell from "../classes/Cell";
 import MenuButton from "./MenuButton";
@@ -17,16 +17,7 @@ function App() {
         return Array(numRows).fill(new Cell()).map(() => Array(numCols).fill(new Cell()))
     }
 
-    useEffect(() => {
-        let interval = setInterval(() => {
-            if (isUpdating) {
-                setBoard((board) => getNewBoard(board));
-            }
-        }, 1000);
-        return () => clearInterval(interval)
-    }, [isUpdating])
-
-    const getNewBoard = (board: Cell[][]) => {
+    const getNewBoard = useCallback((board: Cell[][]) => {
         return board.map((row, i) => {
             return row.map((cell, j) => {
                 const neighbors = getNeighbors(i, j, board)
@@ -42,7 +33,17 @@ function App() {
                 return cell
             })
         })
-    }
+    }, []);
+
+    useEffect(() => {
+        let interval = setInterval(() => {
+            if (isUpdating) {
+                setBoard((board) => getNewBoard(board));
+            }
+        }, 1000);
+        return () => clearInterval(interval)
+    }, [isUpdating, getNewBoard])
+
 
     const getNeighbors = (i: number, j: number, board: Cell[][]) => {
         let neighbors = 0
