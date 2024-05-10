@@ -113,6 +113,7 @@ function App() {
                                  const rect = target.getBoundingClientRect();
                                  const x = event.touches[0].clientX - rect.left;
                                  const y = event.touches[0].clientY - rect.top;
+                                 console.log(x, y);
                                  const i = Math.floor(y / CELL_SIZE);
                                  const j = Math.floor(x / CELL_SIZE);
                                  handleMouseOver(i, j);
