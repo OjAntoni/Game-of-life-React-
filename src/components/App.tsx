@@ -108,8 +108,6 @@ function App() {
                              }
                              onTouchEnd={handleMouseUp}
                              onTouchMove={(event) => {
-                                 const target = event.target as Element;
-                                 const rect = target.getBoundingClientRect();
                                  const x = event.touches[0].clientX;
                                  const y = event.touches[0].clientY;
                                  const i = Math.floor((y) / CELL_SIZE);
