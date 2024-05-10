@@ -5,16 +5,37 @@ import MenuButton from "./MenuButton";
 
 function App() {
     const CELL_SIZE = 20;
-    const [board, setBoard] = useState(() => getWhiteBoard());
     const [isPainting, setIsPainting] = useState(false);
     const [isUpdating, setIsUpdating] = useState(true);
+    const [windowSize, setWindowSize] = useState({
+        width: window.innerWidth,
+        height: window.innerHeight,
+    });
+    const [board, setBoard] = useState(() => getWhiteBoard());
+
+    useEffect(() => {
+        const handleResize = () => {
+            console.log('resize')
+            setWindowSize({
+                width: window.innerWidth,
+                height: window.innerHeight,
+            });
+            setBoard(getWhiteBoard());
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    });
+
+
 
     function getWhiteBoard(): Cell[][] {
-        const headerHeight = 40;
-        const numRows = Math.floor((window.innerHeight - headerHeight) / CELL_SIZE);
-        const numCols = Math.floor(window.innerWidth / CELL_SIZE);
-
-        return Array(numRows).fill(new Cell()).map(() => Array(numCols).fill(new Cell()))
+        const maxCellsX = Math.floor(windowSize.width / CELL_SIZE);
+        const maxCellsY = Math.floor((windowSize.height) / CELL_SIZE);
+        return Array(maxCellsY).fill(new Cell()).map(() => Array(maxCellsX).fill(new Cell()))
     }
 
     const getNewBoard = useCallback((board: Cell[][]) => {
@@ -93,7 +114,7 @@ function App() {
             {board.map((row, i) => (
                 <div className="row" key={i}>
                     {row.map((cell, j) => (
-                        <div className="cell" key={j} style={{backgroundColor: cell.isAlive ? "black" : "white"}}
+                        <div className="cell" key={j} data-i={i} data-j={j} style={{backgroundColor: cell.isAlive ? "black" : "white"}}
                              onMouseDown={(event) => {
                                  event.preventDefault();
                                  handleMouseDown(i, j)
@@ -108,10 +129,12 @@ function App() {
                              }
                              onTouchEnd={handleMouseUp}
                              onTouchMove={(event) => {
+                                 event.preventDefault();
                                  const x = event.touches[0].clientX;
                                  const y = event.touches[0].clientY;
-                                 const i = Math.floor((y) / CELL_SIZE);
-                                 const j = Math.floor((x) / CELL_SIZE);
+                                 const target = document.elementFromPoint(x, y) as HTMLElement;
+                                 const i = Number(target.dataset.i);
+                                 const j = Number(target.dataset.j);
                                  handleMouseOver(i, j);
                              }}
                              draggable="false"
