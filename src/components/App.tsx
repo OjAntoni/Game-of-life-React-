@@ -34,7 +34,7 @@ function App() {
 
     function getWhiteBoard(): Cell[][] {
         const maxCellsX = Math.floor(windowSize.width / CELL_SIZE);
-        const maxCellsY = Math.floor((windowSize.height) / CELL_SIZE);
+        const maxCellsY = Math.floor((windowSize.height*0.95) / CELL_SIZE);
         return Array(maxCellsY).fill(new Cell()).map(() => Array(maxCellsX).fill(new Cell()))
     }
 
