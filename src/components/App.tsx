@@ -83,7 +83,7 @@ function App() {
     }
 
     const handleMouseOver = (i: number, j: number) => {
-        if (isPainting) {
+        if (isPainting && board[i] && board[i][j] && !board[i][j].isAlive){
             onCellClick(i, j)
         }
     }
