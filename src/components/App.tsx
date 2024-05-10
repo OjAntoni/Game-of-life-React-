@@ -4,10 +4,10 @@ import Cell from "../classes/Cell";
 import MenuButton from "./MenuButton";
 
 function App() {
+    const CELL_SIZE = 20;
     const [board, setBoard] = useState(() => getWhiteBoard());
     const [isPainting, setIsPainting] = useState(false);
     const [isUpdating, setIsUpdating] = useState(true);
-    const CELL_SIZE = 20;
 
     function getWhiteBoard(): Cell[][] {
         const headerHeight = 40;
