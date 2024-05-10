@@ -7,12 +7,12 @@ function App() {
     const [board, setBoard] = useState(() => getWhiteBoard());
     const [isPainting, setIsPainting] = useState(false);
     const [isUpdating, setIsUpdating] = useState(true);
+    const CELL_SIZE = 20;
 
     function getWhiteBoard(): Cell[][] {
-        const cellSize = 20; // size of each cell in pixels
         const headerHeight = 40;
-        const numRows = Math.floor((window.innerHeight - headerHeight) / cellSize);
-        const numCols = Math.floor(window.innerWidth / cellSize);
+        const numRows = Math.floor((window.innerHeight - headerHeight) / CELL_SIZE);
+        const numCols = Math.floor(window.innerWidth / CELL_SIZE);
 
         return Array(numRows).fill(new Cell()).map(() => Array(numCols).fill(new Cell()))
     }
@@ -107,6 +107,16 @@ function App() {
                                  handleMouseDown(i, j)}
                              }
                              onTouchEnd={handleMouseUp}
+                             onTouchMove={(event) => {
+                                 event.preventDefault();
+                                 const target = event.target as Element;
+                                 const rect = target.getBoundingClientRect();
+                                 const x = event.touches[0].clientX - rect.left;
+                                 const y = event.touches[0].clientY - rect.top;
+                                 const i = Math.floor(y / CELL_SIZE);
+                                 const j = Math.floor(x / CELL_SIZE);
+                                 handleMouseOver(i, j);
+                             }}
                              draggable="false"
                         >
                         </div>
