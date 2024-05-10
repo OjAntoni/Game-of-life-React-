@@ -12,6 +12,8 @@ function App() {
         height: window.innerHeight,
     });
     const [board, setBoard] = useState(() => getWhiteBoard());
+    const allowedSpeeds = [2000, 1000, 500, 250, 100];
+    const [speed, setSpeed] = useState(1000);
 
     useEffect(() => {
         const handleResize = () => {
@@ -30,7 +32,16 @@ function App() {
         };
     });
 
-
+    function changeSpeed() {
+        const index = allowedSpeeds.indexOf(speed);
+        if (index === allowedSpeeds.length - 1) {
+            setSpeed(allowedSpeeds[0]);
+            return allowedSpeeds[0];
+        } else {
+            setSpeed(allowedSpeeds[index + 1]);
+            return allowedSpeeds[index + 1];
+        }
+    }
 
     function getWhiteBoard(): Cell[][] {
         const maxCellsX = Math.floor(windowSize.width / CELL_SIZE) + 4;
@@ -61,9 +72,9 @@ function App() {
             if (isUpdating) {
                 setBoard((board) => getNewBoard(board));
             }
-        }, 1000);
+        }, speed);
         return () => clearInterval(interval)
-    }, [isUpdating, getNewBoard])
+    }, [isUpdating, getNewBoard, speed])
     
 
     const getNeighbors = (i: number, j: number, board: Cell[][]) => {
@@ -143,7 +154,7 @@ function App() {
                     ))}
                 </div>
             ))}
-            <MenuButton toggleStop={() => setIsUpdating(!isUpdating)}/>
+            <MenuButton toggleStop={() => setIsUpdating(!isUpdating)} toggleSpeed={()=>changeSpeed()}/>
         </div>
     );
 }
