@@ -43,7 +43,7 @@ function App() {
         }, 1000);
         return () => clearInterval(interval)
     }, [isUpdating, getNewBoard])
-
+    
 
     const getNeighbors = (i: number, j: number, board: Cell[][]) => {
         let neighbors = 0
@@ -102,6 +102,11 @@ function App() {
                              onMouseOver={() => {
                                  handleMouseOver(i, j)
                              }}
+                             onTouchStart={(event) => {
+                                 event.preventDefault();
+                                 handleMouseDown(i, j)}
+                             }
+                             onTouchEnd={handleMouseUp}
                              draggable="false"
                         >
                         </div>
