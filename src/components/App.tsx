@@ -32,6 +32,26 @@ function App() {
         };
     });
 
+    useEffect(() => {
+        const setBoardHeight = () => {
+            const board = document.getElementById('Board');
+            if (board) {
+                board.style.height = `${window.innerHeight}px`;
+            }
+        };
+
+        // Set initial height
+        setBoardHeight();
+
+        // Update height when window is resized
+        window.addEventListener('resize', setBoardHeight);
+
+        // Clean up event listener when component unmounts
+        return () => {
+            window.removeEventListener('resize', setBoardHeight);
+        };
+    }, []);
+
     function changeSpeed() {
         const index = allowedSpeeds.indexOf(speed);
         if (index === allowedSpeeds.length - 1) {
@@ -144,9 +164,11 @@ function App() {
                                  const x = event.touches[0].clientX;
                                  const y = event.touches[0].clientY;
                                  const target = document.elementFromPoint(x, y) as HTMLElement;
-                                 const i = Number(target.dataset.i);
-                                 const j = Number(target.dataset.j);
-                                 handleMouseOver(i, j);
+                                 if (target && target.dataset) {
+                                     const i = Number(target.dataset.i);
+                                     const j = Number(target.dataset.j);
+                                     handleMouseOver(i, j);
+                                 }
                              }}
                              draggable="false"
                         >
