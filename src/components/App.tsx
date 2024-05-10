@@ -33,8 +33,8 @@ function App() {
 
 
     function getWhiteBoard(): Cell[][] {
-        const maxCellsX = Math.floor(windowSize.width / CELL_SIZE);
-        const maxCellsY = Math.floor((windowSize.height*0.95) / CELL_SIZE);
+        const maxCellsX = Math.floor(windowSize.width / CELL_SIZE) + 4;
+        const maxCellsY = Math.floor((windowSize.height*0.95) / CELL_SIZE) + 4;
         return Array(maxCellsY).fill(new Cell()).map(() => Array(maxCellsX).fill(new Cell()))
     }
 
@@ -111,21 +111,21 @@ function App() {
 
     return (
         <div className="Board" draggable="false">
-            {board.map((row, i) => (
-                <div className="row" key={i}>
-                    {row.map((cell, j) => (
-                        <div className="cell" key={j} data-i={i} data-j={j} style={{backgroundColor: cell.isAlive ? "black" : "white"}}
+            {board.slice(2,-3).map((row, i) => (
+                <div className="row" key={i+2}>
+                    {row.slice(2, -3).map((cell, j) => (
+                        <div className="cell" key={j+2} data-i={i+2} data-j={j+2} style={{backgroundColor: cell.isAlive ? "black" : "white"}}
                              onMouseDown={(event) => {
                                  event.preventDefault();
-                                 handleMouseDown(i, j)
+                                 handleMouseDown(i+2, j+2)
                              }}
                              onMouseUp={handleMouseUp}
                              onMouseOver={() => {
-                                 handleMouseOver(i, j)
+                                 handleMouseOver(i+2, j+2)
                              }}
                              onTouchStart={(event) => {
                                  event.preventDefault();
-                                 handleMouseDown(i, j)}
+                                 handleMouseDown(i+2,j+2)}
                              }
                              onTouchEnd={handleMouseUp}
                              onTouchMove={(event) => {
