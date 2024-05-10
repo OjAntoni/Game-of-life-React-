@@ -15,7 +15,7 @@ function MenuButton({toggleStop, toggleSpeed}:{toggleStop: ()=>void, toggleSpeed
                     <path d="M4 6H20M4 12H20M4 18H20" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
             </button>
-            <Popup show={isOpen} toggleStop={toggleStop} toggleSpeed={toggleSpeed}/>
+            {isOpen && <Popup show={isOpen} toggleStop={toggleStop} toggleSpeed={toggleSpeed}/>}
         </div>
     );
 }
